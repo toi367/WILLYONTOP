@@ -1,0 +1,422 @@
+local P=game:GetService("Players")
+local UIS=game:GetService("UserInputService")
+local M=P.LocalPlayer
+
+local G=Instance.new("ScreenGui")
+G.Name="WILLYSCRIPTONTOP"
+G.ResetOnSpawn=false
+G.Parent=M:WaitForChild("PlayerGui")
+
+-- MÀU
+local Yellow=Color3.fromRGB(255,200,0)
+local Green=Color3.fromRGB(0,180,70)
+local DarkGreen=Color3.fromRGB(15,35,20)
+local Green2=Color3.fromRGB(0,100,45)
+local Gray=Color3.fromRGB(60,60,60)
+
+-- =========================
+-- NÚT ON/OFF KÉO ĐƯỢC
+-- =========================
+
+local Toggle=Instance.new("TextButton",G)
+Toggle.Size=UDim2.new(0,95,0,42)
+Toggle.Position=UDim2.new(0,15,0,70)
+Toggle.BackgroundColor3=Green
+Toggle.Text="● ON"
+Toggle.TextColor3=Color3.new(1,1,1)
+Toggle.TextSize=17
+Toggle.Font=Enum.Font.GothamBold
+Toggle.ZIndex=10
+
+Instance.new("UICorner",Toggle).CornerRadius=UDim.new(0,10)
+
+local ToggleStroke=Instance.new("UIStroke",Toggle)
+ToggleStroke.Thickness=2
+ToggleStroke.Color=Yellow
+
+-- Kéo nút
+local draggingToggle=false
+local toggleStart
+local togglePos
+
+Toggle.InputBegan:Connect(function(i)
+	if i.UserInputType==Enum.UserInputType.MouseButton1
+	or i.UserInputType==Enum.UserInputType.Touch then
+
+		draggingToggle=true
+		toggleStart=i.Position
+		togglePos=Toggle.Position
+	end
+end)
+
+UIS.InputChanged:Connect(function(i)
+	if draggingToggle and
+		(i.UserInputType==Enum.UserInputType.MouseMovement
+		or i.UserInputType==Enum.UserInputType.Touch) then
+
+		local d=i.Position-toggleStart
+
+		Toggle.Position=UDim2.new(
+			togglePos.X.Scale,
+			togglePos.X.Offset+d.X,
+			togglePos.Y.Scale,
+			togglePos.Y.Offset+d.Y
+		)
+	end
+end)
+
+UIS.InputEnded:Connect(function(i)
+	if i.UserInputType==Enum.UserInputType.MouseButton1
+	or i.UserInputType==Enum.UserInputType.Touch then
+		draggingToggle=false
+	end
+end)
+
+-- =========================
+-- GUI CHÍNH
+-- =========================
+
+local F=Instance.new("Frame",G)
+F.Size=UDim2.new(0,520,0,390)
+F.Position=UDim2.new(.5,-260,.5,-195)
+F.BackgroundColor3=DarkGreen
+
+Instance.new("UICorner",F).CornerRadius=UDim.new(0,12)
+
+-- TITLE
+local T=Instance.new("TextLabel",F)
+T.Size=UDim2.new(1,0,0,48)
+T.BackgroundColor3=Yellow
+T.Text="WILLYSCRIPTONTOP"
+T.TextColor3=Color3.fromRGB(0,60,20)
+T.TextSize=21
+T.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",T).CornerRadius=UDim.new(0,12)
+
+-- =========================
+-- KÉO GUI
+-- =========================
+
+local dragging=false
+local dragStart
+local startPos
+
+T.InputBegan:Connect(function(i)
+	if i.UserInputType==Enum.UserInputType.MouseButton1
+	or i.UserInputType==Enum.UserInputType.Touch then
+
+		dragging=true
+		dragStart=i.Position
+		startPos=F.Position
+	end
+end)
+
+UIS.InputChanged:Connect(function(i)
+	if dragging and
+		(i.UserInputType==Enum.UserInputType.MouseMovement
+		or i.UserInputType==Enum.UserInputType.Touch) then
+
+		local d=i.Position-dragStart
+
+		F.Position=UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset+d.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset+d.Y
+		)
+	end
+end)
+
+UIS.InputEnded:Connect(function(i)
+	if i.UserInputType==Enum.UserInputType.MouseButton1
+	or i.UserInputType==Enum.UserInputType.Touch then
+
+		dragging=false
+	end
+end)
+
+-- =========================
+-- ĐI TỚI PLAYER
+-- =========================
+
+local PlayerTitle=Instance.new("TextLabel",F)
+PlayerTitle.Position=UDim2.new(0,10,0,60)
+PlayerTitle.Size=UDim2.new(.5,-15,0,36)
+PlayerTitle.BackgroundColor3=Green
+PlayerTitle.Text="👤 ĐI TỚI PLAYER"
+PlayerTitle.TextColor3=Color3.new(1,1,1)
+PlayerTitle.TextSize=15
+PlayerTitle.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",PlayerTitle).CornerRadius=UDim.new(0,8)
+
+local PlayerList=Instance.new("ScrollingFrame",F)
+PlayerList.Position=UDim2.new(0,10,0,105)
+PlayerList.Size=UDim2.new(.5,-15,1,-115)
+PlayerList.BackgroundTransparency=1
+PlayerList.BorderSizePixel=0
+PlayerList.ScrollBarThickness=5
+PlayerList.ScrollBarImageColor3=Yellow
+PlayerList.CanvasSize=UDim2.new(0,0,0,0)
+
+local PlayerLayout=Instance.new("UIListLayout",PlayerList)
+PlayerLayout.Padding=UDim.new(0,5)
+
+-- =========================
+-- ĐI TỚI VỊ TRÍ
+-- =========================
+
+local PositionTitle=Instance.new("TextLabel",F)
+PositionTitle.Position=UDim2.new(.5,5,0,60)
+PositionTitle.Size=UDim2.new(.5,-15,0,36)
+PositionTitle.BackgroundColor3=Green
+PositionTitle.Text="📍 ĐI TỚI VỊ TRÍ"
+PositionTitle.TextColor3=Color3.new(1,1,1)
+PositionTitle.TextSize=15
+PositionTitle.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",PositionTitle).CornerRadius=UDim.new(0,8)
+
+local Save=Instance.new("TextButton",F)
+Save.Position=UDim2.new(.5,10,0,110)
+Save.Size=UDim2.new(.5,-20,0,42)
+Save.BackgroundColor3=Green
+Save.Text="📍 LƯU VỊ TRÍ"
+Save.TextColor3=Color3.new(1,1,1)
+Save.TextSize=13
+Save.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",Save).CornerRadius=UDim.new(0,8)
+
+local Go=Instance.new("TextButton",F)
+Go.Position=UDim2.new(.5,10,0,160)
+Go.Size=UDim2.new(.5,-20,0,42)
+Go.BackgroundColor3=Green2
+Go.Text="▶ ĐI TỚI VỊ TRÍ"
+Go.TextColor3=Color3.new(1,1,1)
+Go.TextSize=13
+Go.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",Go).CornerRadius=UDim.new(0,8)
+
+local Clear=Instance.new("TextButton",F)
+Clear.Position=UDim2.new(.5,10,0,210)
+Clear.Size=UDim2.new(.5,-20,0,38)
+Clear.BackgroundColor3=Gray
+Clear.Text="✕ XÓA VỊ TRÍ"
+Clear.TextColor3=Color3.new(1,1,1)
+Clear.TextSize=12
+Clear.Font=Enum.Font.GothamBold
+
+Instance.new("UICorner",Clear).CornerRadius=UDim.new(0,8)
+
+local Status=Instance.new("TextLabel",F)
+Status.Position=UDim2.new(.5,10,0,260)
+Status.Size=UDim2.new(.5,-20,0,70)
+Status.BackgroundTransparency=1
+Status.Text="Chưa chọn mục tiêu"
+Status.TextColor3=Color3.new(1,1,1)
+Status.TextSize=13
+Status.Font=Enum.Font.GothamBold
+Status.TextWrapped=true
+
+-- =========================
+-- BIẾN
+-- =========================
+
+local Target=nil
+local Following=false
+
+local SavedPosition=nil
+local GoingToSaved=false
+
+-- =========================
+-- LƯU VỊ TRÍ
+-- =========================
+
+Save.MouseButton1Click:Connect(function()
+
+	local c=M.Character
+	local r=c and c:FindFirstChild("HumanoidRootPart")
+
+	if r then
+
+		SavedPosition=r.Position
+
+		Status.Text="✓ Đã lưu vị trí hiện tại"
+		Save.Text="✓ ĐÃ LƯU"
+
+		task.delay(1.5,function()
+			if Save then
+				Save.Text="📍 LƯU VỊ TRÍ"
+			end
+		end)
+
+	end
+end)
+
+-- =========================
+-- ĐI TỚI VỊ TRÍ
+-- =========================
+
+Go.MouseButton1Click:Connect(function()
+
+	if SavedPosition then
+
+		Target=nil
+		Following=false
+		GoingToSaved=true
+
+		Status.Text="▶ Đang đi tới vị trí đã lưu"
+
+	else
+
+		Status.Text="⚠ Chưa có vị trí được lưu"
+
+	end
+end)
+
+-- =========================
+-- XÓA VỊ TRÍ
+-- =========================
+
+Clear.MouseButton1Click:Connect(function()
+
+	SavedPosition=nil
+	GoingToSaved=false
+
+	Status.Text="Đã xóa vị trí"
+
+	Clear.Text="✓ ĐÃ XÓA"
+
+	task.delay(1,function()
+		if Clear then
+			Clear.Text="✕ XÓA VỊ TRÍ"
+		end
+	end)
+
+end)
+
+-- =========================
+-- PLAYER BUTTON
+-- =========================
+
+local function AddPlayer(p)
+
+	if p==M then return end
+
+	local B=Instance.new("TextButton",PlayerList)
+
+	B.Size=UDim2.new(1,-5,0,40)
+	B.BackgroundColor3=Green2
+	B.Text="→ "..p.Name
+	B.TextColor3=Color3.new(1,1,1)
+	B.TextSize=14
+	B.Font=Enum.Font.GothamBold
+
+	Instance.new("UICorner",B).CornerRadius=UDim.new(0,8)
+
+	B.MouseButton1Click:Connect(function()
+
+		Target=p
+		Following=true
+		GoingToSaved=false
+
+		Status.Text="👤 Đang đi tới: "..p.Name
+
+	end)
+end
+
+for _,p in ipairs(P:GetPlayers()) do
+	AddPlayer(p)
+end
+
+P.PlayerAdded:Connect(AddPlayer)
+
+PlayerLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+
+	PlayerList.CanvasSize=UDim2.new(
+		0,
+		0,
+		0,
+		PlayerLayout.AbsoluteContentSize.Y+5
+	)
+
+end)
+
+-- =========================
+-- DI CHUYỂN
+-- =========================
+
+task.spawn(function()
+
+	while task.wait(.1) do
+
+		local c=M.Character
+		local h=c and c:FindFirstChildOfClass("Humanoid")
+
+		if h then
+
+			if GoingToSaved and SavedPosition then
+
+				h:MoveTo(SavedPosition)
+
+			elseif Following and Target and Target.Parent then
+
+				local t=Target.Character
+				local r=t and t:FindFirstChild("HumanoidRootPart")
+
+				if r then
+					h:MoveTo(r.Position)
+				end
+
+			end
+		end
+	end
+
+end)
+
+-- =========================
+-- PLAYER RỜI SERVER
+-- =========================
+
+P.PlayerRemoving:Connect(function(p)
+
+	if Target==p then
+
+		Target=nil
+		Following=false
+
+		Status.Text="Player đã rời server"
+
+	end
+end)
+
+-- =========================
+-- ON/OFF
+-- =========================
+
+local on=true
+
+Toggle.MouseButton1Click:Connect(function()
+
+	on=not on
+
+	F.Visible=on
+
+	if on then
+
+		Toggle.Text="● ON"
+		Toggle.BackgroundColor3=Green
+
+	else
+
+		Toggle.Text="○ OFF"
+		Toggle.BackgroundColor3=Color3.fromRGB(70,70,70)
+
+		Following=false
+		GoingToSaved=false
+
+	end
+end)
